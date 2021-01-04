@@ -2,18 +2,16 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np 
-with open('eco-sensors_irrigation_2020-06-01_2020-08-31.json') as fichier:
-    data_dict = json.load(fichier)
-humidity_dataframe = pd.DataFrame(data_dict)
-humidity_dataframe
 def clean_data(data):
     for i in range(len(data)):
         if data[i]==200:
             data[i]=np.nan #retourner tout les donnees egale 200 a nan
     return data
+with open('tp\data.json') as fich:
+    data_dict = json.load(fich)
 #myjsonfile=open('tp\data.json','r')
-jsondata=myjsonfile.read()
-json_data = json.loads(jsondata)
+#jsondata=myjsonfile.read()
+json_data = json.loads(jsondata) #transformer fichier json en dictionnaire
 data1=file1["datasets"]["data"]
 data2=file2["datasets"]["data"]
 data3=file3["datasets"]["data"]
@@ -57,11 +55,11 @@ def save_plot_to_file(dataframe,title, labels, start_date, end_date, filename):
         axs[j].fill_between(index,60,30,facecolor="#ADFF2F",alpha=0.2)
         axs[j].fill_between(index,100,60,facecolor="#FBFD92",alpha=0.2)
         axs[j].fill_between(index,200,100,facecolor="#FC33FF",alpha=0.2)
-        axs[j].margins(0)
+        axs[j].margins(0) #sansmarge
         axs[j].set_yticks([7.5,22.5,45,80,150])
         axs[j].plot(index, values, label=i)
-        axs[j].legend(loc="upper left")
+        axs[j].legend(loc="upper left") #placée dans le coin en haut à gauche
         axs[j].set_yticklabels(["saturated","too wet","perfect","plan to water","dry"])
-save_plot_to_file(humidity_dataframe,"Irrigation june 2020", [label1], "2020-06-01", "2020-06-30","data.json")
-save_plot_to_file(humidity_dataframe,"Irrigation june 2020", [label2], "2020-06-01", "2020-06-30","data.json")
-save_plot_to_file(humidity_dataframe,"Irrigation june 2020", [label3], "2020-06-01", "2020-06-30","data.json")
+save_plot_to_file(humidity_dataframe[label1],"Irrigation june 2020", [label1, label2, label3], "2020-06-01", "2020-06-29","data.json")
+save_plot_to_file(humidity_dataframe[label2],"Irrigation july 2020", [label1, label2, label3], "2020-07-05", "2020-07-29","data.json")
+save_plot_to_file(humidity_dataframe[label3],"Irrigation august 2020", [label1, label2, label3], "2020-08-05", "2020-08-29","data.json")
